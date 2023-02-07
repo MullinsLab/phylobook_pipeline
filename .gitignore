@@ -1,1 +1,3 @@
 test_datasets/
+script/*.pyc
+script/__pycache__
