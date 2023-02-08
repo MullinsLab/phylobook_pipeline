@@ -14,13 +14,17 @@ import sys, re, os
 import argparse
 import glob
 import run_phyml
-from paths import figtree
+
 
 def main(wdir, dt, proc, alen):
 	print("**** Run PhyML ***")
 	run_phyml.main(wdir, dt, proc)
 	
+	pydir = os.path.dirname(os.path.realpath(__file__))
+	
 	print("\n**** Run figtree-enhanced-command-line ****\n")
+	pdir = os.path.dirname(pydir)
+	figtree = os.path.join(pdir, "figtree", "figtree.jar")
 	for file in glob.glob(os.path.join(wdir, '*phyml_tree.txt')):
 		print("=== Processing file "+file+" ===")
 		command = "java -jar "+figtree+" -avg_seq_length "+str(alen)+" -colors extract -newickexport -nexusexport -graphic SVG -height 768 -width 783 "+file
@@ -33,9 +37,11 @@ def main(wdir, dt, proc, alen):
 			
 	print("\n**** Run highlight_bot ****\n")
 	pydir = os.path.dirname(os.path.realpath(__file__))
-	hlcommand = "python3 "+pydir+"/highlighter_bot.py -d "+wdir
+	highlighter_bot = os.path.join(pydir, "highlighter_bot.py")
+	hlcommand = "python3 "+highlighter_bot+" -d "+wdir
 	if dt == 'aa':
 		hlcommand += " -a"
+	print(hlcommand)
 	os.system(hlcommand)
 	
 	print("\n**** Crop highlighter images ****\n")
