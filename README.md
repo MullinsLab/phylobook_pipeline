@@ -55,3 +55,5 @@ pip3 install robobrowser
 pip3 install lxml
 pip3 install wget
 ```
+
+### 5. Install [ImageMagick](https://imagemagick.org/script/download.php) to trim highlighter image for Phylobook
