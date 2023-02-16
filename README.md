@@ -24,23 +24,23 @@ git clone https://github.com/MullinsLab/phylobook_pipeline.git
 
 #### a. Download [PhyML](https://github.com/stephaneguindon/phyml) in your designated directory
 ```
-git clone -b v3.3.20220408 https://github.com/stephaneguindon/phyml.git phyml_v3.3.20220408
+git clone https://github.com/stephaneguindon/phyml.git
 ```
   - the current release is v3.3.20220408
-  - it will create a directory called "phyml_3.3.20220408"
+  - it will create a directory called "phyml"
 
 #### b. Update files in order to output pairwise distances after running phyml
 ```
-cd phyml_v3.3.20220408/src
+cd phyml/src
 python WherePhylobookPipelineInstalled/script/updatefiles.py
 cd ..
 ```
 
-#### c. In the directory of phyml_v3.3.20220408/, install phyml following the instructions on PhyML [GitHub](https://github.com/stephaneguindon/phyml)
+#### c. In the directory of phyml/, install phyml following the instructions on PhyML [GitHub](https://github.com/stephaneguindon/phyml)
 
 #### d. Modify path.py to set the correct path to run phyml in your computer
  - open WherePhylobookPipelineInstalled/script/path.py file in a text editor
- - replace "where_your_phyml_path/program_name" with the correct phyml path where you just installed, e.g "your_designated_directory/phyml_v3.3.20220408/src/phyml" (the path should include the program name), and save the file
+ - replace "where_your_phyml_path/program_name" with the correct phyml path where you just installed, e.g "your_designated_directory/phyml/src/phyml" (the path should include the program name), and save the file
 
 ### 3. Requirements for figtree-enhanced-command-line 
  - This source is an extension of Adam Rambaut's FigTree.  The original source can be found here:
