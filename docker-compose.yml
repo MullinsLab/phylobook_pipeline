@@ -1,0 +1,10 @@
+version: '1.0'
+services: 
+  phylobook_pipeline:
+    container_name: phylobook_pipeline
+    build: .
+
+    volumes:
+      - .:/phylobook_pipeline
+    
+    tty: true
