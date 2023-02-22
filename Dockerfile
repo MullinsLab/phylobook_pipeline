@@ -24,9 +24,9 @@ RUN make
 
 # Update location of phyml
 # RUN sed -i 's/\/opt\/home\/wdeng\/phyml_v3.3.20220408/\/phyml/g' /phylobook_pipeline/script/paths.py
-RUN mkdir -p /phylobook_pipeline/phyml
-RUN cp /phyml/src/phyml /phylobook_pipeline/phyml/phyml
-VOLUME /phylobook_pipeline/phyml
+RUN mkdir -p /phylobook_pipeline/phyml/src
+RUN cp /phyml/src/phyml /phylobook_pipeline/phyml/src/phyml
+VOLUME /phylobook_pipeline/phyml/src
 
 # Install Image-Magick
 RUN apt-get -y update
