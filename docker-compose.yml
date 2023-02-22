@@ -9,6 +9,6 @@ services:
     
     # If you are on linux and you would like the output file not to be owned by root
     # Change this to be your userid:groupid, which can be obtained with the id command
-    # user: 1000:1000
+    # user: userid:groupid
 
     tty: true

@@ -14,6 +14,8 @@ python3 WherePhylobookPipelineInstalled/script/phylobook.py -d WorkingDirectoryP
 ## Installation and Configuration
 The pipeline consists of three programming components ([run_phyml_batch](https://github.com/MullinsLab/run_phyml_batch), [figtree-enhanced-command-line](https://github.com/MullinsLab/figtree-enhanced-command-line) and [highlighter_bot](https://github.com/MullinsLab/highlighter_bot)). In order to process the pipeline successfully, you need to meet the requirements of the programming components
 
+If you are wanting to run the pipeline in a Docker contianer, see the [Docker](#docker) section of this document.
+
 ### 1. Clone this repository in your designated directory
 ```
 git clone https://github.com/MullinsLab/phylobook_pipeline.git
@@ -54,3 +56,46 @@ pip3 install wget
 ```
 
 ### 5. Install [ImageMagick](https://imagemagick.org/script/download.php) to trim highlighter image for Phylobook
+
+&nbsp;
+# Docker
+
+phylobook_pipeline includes a Dockerfile and a docker-compose.yml file to allow it to run in a Docker container. Please follow these installation steps  
+
+### 1. Ensure you have Docker installed on your system
+See https://www.docker.com/
+
+### 2. Clone this repository in your designated directory
+```
+git clone https://github.com/MullinsLab/phylobook_pipeline.git
+```
+  - it will create a directory called "phylobook_pipeline" in your designated directory (i.e. WherePhylobookPipelineInstalled)
+
+### 3. If you are running the container on a Linux computer
+If you are running phylobook_pipeline on a Linux computer the files created by the pipeline will not have the correct user ownership.  In order to get around this, edit the docker-compose.yml file to have your userid and groupid.
+
+You can find these using the id command on the command line.
+
+Edit line 12 in docker-compose.yml, deleting the # sign, and replacing the userid:groupid parts of the line. 
+```
+    # user: userid:groupid
+```
+will be changed to look similar to:
+```
+    user: 1001:1001
+```
+
+### 4. Build and run the container
+```
+cd phylobook_pipeline
+docker compose up -d --build
+```
+This will likely take more than a full minute, depending on the speed of your computer.
+
+### 5. Start a command line inside the docker contianer
+```
+docker exec -it phylobook_pipeline bash
+```
+This will put you into a Linux command line where you can operate the pipeline.
+
+You can exit using ^d (control key + d).
