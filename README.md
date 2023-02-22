@@ -58,7 +58,7 @@ pip3 install wget
 ### 5. Install [ImageMagick](https://imagemagick.org/script/download.php) to trim highlighter image for Phylobook
 
 &nbsp;
-# Docker
+## Docker
 
 phylobook_pipeline includes a Dockerfile and a docker-compose.yml file to allow it to run in a Docker container. Please follow these installation steps  
 
@@ -69,7 +69,7 @@ See https://www.docker.com/
 ```
 git clone https://github.com/MullinsLab/phylobook_pipeline.git
 ```
-  - it will create a directory called "phylobook_pipeline" in your designated directory (i.e. WherePhylobookPipelineInstalled)
+it will create a directory called "phylobook_pipeline" in your designated directory (i.e. WherePhylobookPipelineInstalled)
 
 ### 3. If you are running the container on a Linux computer
 If you are running phylobook_pipeline on a Linux computer the files created by the pipeline will not have the correct user ownership.  In order to get around this, edit the docker-compose.yml file to have your userid and groupid.
