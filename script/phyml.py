@@ -11,7 +11,7 @@ import sys
 import re
 import os
 import argparse
-from paths import phyml
+#from paths import phyml
 
 def main(infile, dt):
     model = ""
@@ -24,7 +24,11 @@ def main(infile, dt):
 
     phymlfile = infile + "_phyml.txt"
     logfile = infile + "_log.txt"
+    pydir = os.path.dirname(os.path.realpath(__file__))
+    pdir = os.path.dirname(pydir)
+    phyml = os.path.join(pdir, "phyml", "src", "phyml")
     command = phyml+" -i "+infile+" -d "+dt+" -q -b 0 -m "+model+" -v e -c 4 -o tlr -a e -f m --print_mat_and_exit --leave_duplicates >"+phymlfile
+    print(command)
     log = ""
     rv = os.system(command)
     if rv == 0:
