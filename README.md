@@ -4,10 +4,9 @@ A program pipeline to run through multiple programs from sequence alignment fast
 ## Usage
 In a working directory that contains sequence alignment fasta files, run
 ````
-python3 WherePhylobookPipelineInstalled/script/phylobook.py -d WorkingDirectoryPath(default: .) -t SequenceType(nt or aa) -p NumberOfProcessors(default: 1) -l AverageSequenceLength
+python3 WherePhylobookPipelineInstalled/script/phylobook.py -d WorkingDirectoryPath(default: .) -t SequenceType(nt or aa) -p NumberOfProcessors(default: 1)
 ````
   - you have to provide the value of SequencType (nt for nuclotide sequences, aa for amino acid sequences)
-  - you have to provide the value of AverageSequenceLength
   - the default value of numberOfProcessors is 1. You can run multiprocessors by providing the value > 1 based on your computer settings
   - it will output enhanced ML tree and highlighter plot for each input sequence alignment file, ready for display and manipulate on phylobook server
 
