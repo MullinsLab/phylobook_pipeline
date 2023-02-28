@@ -11,13 +11,6 @@ args = parser.parse_args()
 aaflag = args.aminoacid
 path = args.dir
 
-browser = RoboBrowser(history=True, parser='lxml')
-url = "https://www.hiv.lanl.gov/content/sequence/HIGHLIGHT/highlighter_top.html?choice=mismatches"
-download_url = "https://www.hiv.lanl.gov"
-#download_referer = "https://www.hiv.lanl.gov/cgi-bin/HIGHLIGHT/highlighter.cgi"
-browser.open(url)
-form = browser.get_form(action=re.compile(r'highlighter.cgi'))
-
 files = []
 for file in glob.glob(os.path.join(path, '*.fasta')):
 	if re.search("_highlighter.fasta", file) is None:
@@ -67,6 +60,13 @@ for file in files:
         shutil.copyfile(treeFilePath, tmpTreeFilePath)
         alignmentFilePath = tmpAlignmentFilePath
         treeFilePath = tmpTreeFilePath
+    
+    browser = RoboBrowser(history=True, parser='lxml')
+    url = "https://www.hiv.lanl.gov/content/sequence/HIGHLIGHT/highlighter_top.html?choice=mismatches"
+    download_url = "https://www.hiv.lanl.gov"
+    #download_referer = "https://www.hiv.lanl.gov/cgi-bin/HIGHLIGHT/highlighter.cgi"
+    browser.open(url)
+    form = browser.get_form(action=re.compile(r'highlighter.cgi'))
 
     form["alignmentFile"].value = open(alignmentFilePath, 'r')
     form["uploadTree"].value = open(treeFilePath, 'r')
@@ -114,14 +114,11 @@ for file in files:
         os.remove(tmpTreeFilePath)
 
     jt = int(time.time() - job_time)
-    print('Took {} seconds to downloaded PNG, TXT, and FASTA from Highlighter for file: {}'.format(jt, cur_seq_name))
-    
+    print('\nTook {} seconds to downloaded PNG, TXT, and FASTA from Highlighter for file: {}'.format(jt, cur_seq_name))
+
     # please be courteous to the server's resources and do not reduce the sleep time between jobs below 60 seconds
     if filenum != num_files:
         time.sleep(10)
 
 ft = int(time.time() - full_time)
 print('All done! Completed in {} seconds. Exiting.'.format(ft))
-
-# to trim PNGs for Phylobook, install ImageMagick and manually run:
-#for f in *_untrimmed.png; do convert -crop +0+179 $f ${f%_untrimmed.png}.png; rm $f; done
