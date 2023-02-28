@@ -10,13 +10,15 @@
 # Date: 2023-02-03
 ##########################################################################################
 
+
 import sys, re, os
 import argparse
 import glob
 import run_phyml
+import average_length
 
 
-def main(wdir, dt, proc, alen):
+def main(wdir, dt, proc):
 	print("**** Run PhyML ***")
 	run_phyml.main(wdir, dt, proc)
 	
@@ -27,6 +29,9 @@ def main(wdir, dt, proc, alen):
 	figtree = os.path.join(pdir, "figtree", "figtree.jar")
 	for file in glob.glob(os.path.join(wdir, '*phyml_tree.txt')):
 		print("=== Processing file "+file+" ===")
+		fastafile = file.replace(".phy_phyml_tree.txt", ".fasta")
+		alen = average_length.main(fastafile)
+		print(f"Average sequence length: {alen}")
 		command = "java -jar "+figtree+" -avg_seq_length "+str(alen)+" -colors extract -newickexport -nexusexport -graphic SVG -height 768 -width 783 "+file
 		print(command)
 		rv = os.system(command)
@@ -50,17 +55,16 @@ def main(wdir, dt, proc, alen):
 		cropcommand = "convert -crop +0+150 -crop -0-50 "+file+" "+cropfile
 		os.system(cropcommand)
 	
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dir", help="directory to hold input sequence fasta file", nargs="?", const=1, type=str, default=".")
     parser.add_argument("-t", "--datatype", help="sequence datatype, must be 'nt' for nucleotide or 'aa' for amino acid", nargs="?", const=1, type=str, required=True)
     parser.add_argument("-p", "--processes", help="number of processes for multiprocessing", nargs="?", const=1, type=int,
                         default="1")
-    parser.add_argument("-l", "--avg_seq_length", help="average sequenc length", nargs="?", const=1, type=int, required=True)
     args = parser.parse_args()
     wdir = args.dir
     dt = args.datatype
     proc = args.processes
-    alen = args.avg_seq_length
 
-    main(wdir, dt, proc, alen)
+    main(wdir, dt, proc)
