@@ -92,10 +92,13 @@ docker compose up -d --build
 ```
 This will likely take more than a full minute, depending on the speed of your computer.
 
-### 5. Start a command line inside the docker contianer
+### 5. Start a command line inside the docker container
 ```
 docker exec -it phylobook_pipeline bash
 ```
 This will put you into a Linux command line where you can operate the pipeline.
 
 You can exit using ^d (control key + d).
+
+### 6. Getting data "into" the Docker container.
+Under the default setup, the only portion of the host computer's file system that is visible within the Docker container is the phylobook_pipeline directory (and subfolders therein). Anything that gets created inside the docker's phylobook_pipeline directory will show up in the host machine.  Thus the easiest way to make data available to the Phylobook Pipeline in the Docker container is to create a subdirectory under the phylobook_pipeline and move data there on the host machine.
