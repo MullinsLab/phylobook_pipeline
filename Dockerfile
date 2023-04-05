@@ -32,6 +32,10 @@ VOLUME /phylobook_pipeline/phyml/src
 RUN apt-get -y update
 RUN apt-get -y install imagemagick
 
+# Overwrite /etc/ImageMagick-6/policy.xml
+RUN mv /etc/ImageMagick-6/policy.xml /etc/ImageMagick-6/policy.xml.bak
+RUN cp /phylobook_pipeline/policy.xml /etc/ImageMagick-6/policy.xml
+
 # Install Java
 RUN apt update
 RUN apt -y install default-jre
