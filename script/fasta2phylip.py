@@ -13,6 +13,8 @@ import argparse
 
 def main(infile, outfile):
     names = []
+    errors = ""
+    sequence_lengths = set()
     seqname = ""
     count, alignlen, seqlen, convertcount = 0, 0, 0, 0
     nameseq = {}
@@ -23,30 +25,40 @@ def main(infile, outfile):
             if line:
                 linematch = re.match(r'^>(\S+)', line)
                 if linematch:
-                    if count >= 1:
-                        if seqlen != alignlen:
-                            sys.exit("Sequences were not aligned: "+str(seqlen)+" vs "+str(alignlen))
-                    count += 1
+                    # if count >= 1:
+                    #     if seqlen != alignlen:
+                    #         sys.exit("Sequences were not aligned: "+str(seqlen)+" vs "+str(alignlen))
+                    # count += 1
                     seqname = linematch.group(1)
+                    if seqname in names:
+                        errors += f"Sequence names are duplicated: {seqname} (rows {((names.index(seqname)*2)+1)} and {((len(names)*2)+1)})\n"
                     names.append(seqname)
                     nameseq[seqname] = ""
-                    seqlen = 0
+                    # seqlen = 0
                 else:
                     nameseq[seqname] += line.upper()
-                    seqlen += len(line)
-                    if count == 1:
-                        alignlen = seqlen
-        if seqlen != alignlen:
-            sys.exit("Sequences were not aligned")
+                    sequence_lengths.add(len(line))
+                    # seqlen += len(line)
+                    # if count == 1:
+                    #     alignlen = seqlen
+        # if seqlen != alignlen:
+        #     sys.exit("Sequences were not aligned")
+
+    if len(sequence_lengths)  > 1:
+        errors = f"Sequences were not alligned.  Lengths include: {sequence_lengths}\n{errors}"
+
+    if errors:
+        errors = f"{infile} has errors:\n{errors}"
+        sys.exit(errors)
 
     with open(outfile, "w") as of:
-        of.write(str(count) + " " + str(alignlen) + "\n")
+        of.write(str(len(nameseq)) + " " + str(sequence_lengths.pop()) + "\n")
         for name in names:
             convertcount += 1
             seq = nameseq[name].replace("*", "-")
             of.write(name + "\t" + seq + "\n")
 
-    log = "processed " + str(count) + " sequences, " + str(convertcount) + " converted"
+    log = f"processed {len(nameseq)} sequences, " + str(convertcount) + " converted"
     print(log)
     return log
 
