@@ -45,7 +45,7 @@ def main(infile, outfile):
         #     sys.exit("Sequences were not aligned")
 
     if len(sequence_lengths)  > 1:
-        errors = f"Sequences were not alligned.  Lengths include: {sequence_lengths}\n{errors}"
+        errors = f"Sequences were not aligned.  Lengths include: {sequence_lengths}\n{errors}"
 
     if errors:
         errors = f"{infile} has errors:\n{errors}"
