@@ -45,7 +45,8 @@ for file in files:
         sys.exit("File not found: " + alignmentFilePath)
 
     if not os.path.isfile(treeFilePath):
-        sys.exit("File not found: " + treeFilePath)
+        print("Tree file not found: " + treeFilePath + ", skipped processing.")
+        continue
 
     if os.path.isfile(save_png):
         print('Skipping {}, PNG already exists'.format(cur_seq_name))
