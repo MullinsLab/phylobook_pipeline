@@ -7,14 +7,19 @@ from robobrowser import RoboBrowser
 parser = argparse.ArgumentParser()
 parser.add_argument("-a", "--aminoacid", help="flag for amino acid sequence", action="store_true")
 parser.add_argument("-d", "--dir", help="directory to hold input sequence fasta file", nargs="?", const=1, type=str, default=".")
+parser.add_argument("-f", "--file", help="specific file to operate on", nargs="?", const=1, type=str, default=None)
+
 args = parser.parse_args()
 aaflag = args.aminoacid
 path = args.dir
+specific_file = args.file
 
 files = []
 for file in glob.glob(os.path.join(path, '*.fasta')):
-	if re.search("_highlighter.fasta", file) is None:
-		files.append(file)
+    if re.search("_highlighter.fasta", file) is None:
+        if not specific_file or file == os.path.join(path, specific_file):
+            files.append(file)
+
 num_files = len(files)
 filenum = 0
 full_time = time.time()
