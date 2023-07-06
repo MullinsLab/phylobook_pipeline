@@ -29,18 +29,20 @@ def main(infile, outfile):
                     #     if seqlen != alignlen:
                     #         sys.exit("Sequences were not aligned: "+str(seqlen)+" vs "+str(alignlen))
                     # count += 1
+                    if seqlen:
+                        sequence_lengths.add(seqlen)
                     seqname = linematch.group(1)
                     if seqname in names:
                         errors += f"Sequence names are duplicated: {seqname} (rows {((names.index(seqname)*2)+1)} and {((len(names)*2)+1)})\n"
                     names.append(seqname)
                     nameseq[seqname] = ""
-                    # seqlen = 0
+                    seqlen = 0
                 else:
                     nameseq[seqname] += line.upper()
-                    sequence_lengths.add(len(line))
-                    # seqlen += len(line)
+                    seqlen += len(line)
                     # if count == 1:
                     #     alignlen = seqlen
+        sequence_lengths.add(seqlen)
         # if seqlen != alignlen:
         #     sys.exit("Sequences were not aligned")
 
