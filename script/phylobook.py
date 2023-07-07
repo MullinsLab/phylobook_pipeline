@@ -14,11 +14,15 @@
 import sys, re, os
 import argparse
 import glob
+import check_fasta
 import run_phyml
 import average_length
 
 
 def main(wdir, dt, proc):
+	# Check the fasta files in the working directory for bad characters
+	check_fasta.main(wdir)
+
 	print("**** Run PhyML ***")
 	run_phyml.main(wdir, dt, proc)
 	
