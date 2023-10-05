@@ -53,11 +53,11 @@ def main(wdir, dt, proc):
 	print(hlcommand)
 	os.system(hlcommand)
 	
-	print("\n**** Crop highlighter images ****\n")
-	for file in glob.glob(os.path.join(wdir, '*_untrimmed.png')):
-		cropfile = file.replace("_untrimmed.png", ".png")
-		cropcommand = "convert -crop +0+150 -crop -0-50 "+file+" "+cropfile
-		os.system(cropcommand)
+	# print("\n**** Crop highlighter images ****\n")
+	# for file in glob.glob(os.path.join(wdir, '*_untrimmed.png')):
+	# 	cropfile = file.replace("_untrimmed.png", ".png")
+	# 	cropcommand = "convert -crop +0+150 -crop -0-50 "+file+" "+cropfile
+	# 	os.system(cropcommand)
 	
 
 if __name__ == '__main__':
