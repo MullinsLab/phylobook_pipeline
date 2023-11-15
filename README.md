@@ -88,6 +88,7 @@ will be changed to look similar to:
 ```
 cd phylobook_pipeline
 docker compose up -d --build
+docker exec -u 0:0 phylobook_pipeline chmod 777 /phylobook_pipeline/phyml/src/phyml
 ```
 This will likely take more than a full minute, depending on the speed of your computer.
 
