@@ -9,24 +9,24 @@ RUN pip install --upgrade pip
 RUN pip install -r /phylobook_pipeline/requirements.txt
 
 # Install phyml
-WORKDIR /
-RUN git clone https://github.com/stephaneguindon/phyml.git
-WORKDIR /phyml/src
+#WORKDIR /
+#RUN git clone --branch v3.3.20220408 https://github.com/stephaneguindon/phyml.git
+#WORKDIR /phyml/src
 
 # Update some source files
-RUN python /phylobook_pipeline/script/updatefiles.py
+#RUN python /phylobook_pipeline/script/updatefiles.py
 
 # make phyml
-WORKDIR /phyml
-RUN sh autogen.sh
-RUN ./configure --enable-phyml 
-RUN make
+#WORKDIR /phyml
+#RUN sh autogen.sh
+#RUN ./configure --enable-phyml 
+#RUN make
 
 # Update location of phyml
 # RUN sed -i 's/\/opt\/home\/wdeng\/phyml_v3.3.20220408/\/phyml/g' /phylobook_pipeline/script/paths.py
-RUN mkdir -p /phylobook_pipeline/phyml/src
-RUN cp /phyml/src/phyml /phylobook_pipeline/phyml/src/phyml
-VOLUME /phylobook_pipeline/phyml/src
+#RUN mkdir -p /phylobook_pipeline/phyml/src
+#RUN cp /phyml/src/phyml /phylobook_pipeline/phyml/src/phyml
+#VOLUME /phylobook_pipeline/phyml/src
 
 # Install Image-Magick
 RUN apt-get -y update
