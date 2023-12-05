@@ -11,7 +11,7 @@ python3 WherePhylobookPipelineInstalled/script/phylobook.py -d WorkingDirectoryP
   - it will output enhanced ML tree and highlighter plot for each input sequence alignment fasta file(.fasta), ready for display and manipulate on phylobook server
 
 ## Installation and Configuration
-The pipeline consists of three programming components ([run_phyml_batch](https://github.com/MullinsLab/run_phyml_batch), [figtree-enhanced-command-line](https://github.com/MullinsLab/figtree-enhanced-command-line) and [highlighter_bot](https://github.com/MullinsLab/highlighter_bot)). In order to process the pipeline successfully, you need to meet the requirements of the programming components
+The pipeline consists of three programming components ([run_phyml_batch](https://github.com/MullinsLab/run_phyml_batch), [figtree-enhanced-command-line](https://github.com/MullinsLab/figtree-enhanced-command-line) and [highlighter(https://github.com/MullinsLab/highlighter)). In order to process the pipeline successfully, you need to meet the requirements of the programming components
 
 If you are wanting to run the pipeline in a Docker contianer, see the [Docker](#docker) section of this document.
 
@@ -26,7 +26,7 @@ git clone https://github.com/MullinsLab/phylobook_pipeline.git
 #### a. Download [PhyML](https://github.com/stephaneguindon/phyml) in the directory "phylobook_pipeline"
 ```
 cd phylobook_pipeline
-git clone https://github.com/stephaneguindon/phyml.git
+git clone --branch v3.3.20220408 https://github.com/stephaneguindon/phyml.git
 ```
   - the current release is v3.3.20220408
   - it will create a subdirectory called "phyml"
@@ -88,7 +88,6 @@ will be changed to look similar to:
 ```
 cd phylobook_pipeline
 docker compose up -d --build
-docker exec -u 0:0 phylobook_pipeline chmod 777 /phylobook_pipeline/phyml/src/phyml
 ```
 This will likely take more than a full minute, depending on the speed of your computer.
 
