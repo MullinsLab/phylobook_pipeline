@@ -49,12 +49,8 @@ https://github.com/rambaut/figtree/releases
 ### 4. Requirements for highlighter_bot 
 In a virtual Python 3 environment:
 ```
-pip3 install robobrowser
-pip3 install lxml
-pip3 install wget
+pip3 install -r requirements.txt
 ```
-
-### 5. Install [ImageMagick](https://imagemagick.org/script/download.php) to trim highlighter image for Phylobook
 
 &nbsp;
 ## Docker
