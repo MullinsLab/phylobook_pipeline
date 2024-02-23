@@ -581,39 +581,51 @@ class HighlighterPlot:
 
         return _write(self.drawing, output_file, self.output_format, dpi=288*self.scale)
 
-    def _draw_marks_mismatch(self, plot_index: int, matches: dict[int: list], is_reference: bool=False) -> None:
+    def _draw_marks_mismatch(self, plot_index: int, mismatches: dict[int: list], is_reference: bool=False) -> None:
         """ Draw marks for a mismatch sequence """
 
-        for base, match_item in matches.items():
-            for code in match_item:
+        already_processed: list = []
+        for base, mismatch_item in mismatches.items():
+            if base in already_processed:
+                continue
+
+            for code in mismatch_item:
                 if code in self._current_scheme:
+                    width: int = 1
                     color: Color = self._hex_to_color(self._current_scheme[code])
-                    self.drawing.add(self._base_mark(plot_index, base, color))
+
+                    check_base: int = base+1
+                    while check_base in mismatches and code in mismatches[check_base]:
+                        width += 1
+                        already_processed.append(check_base)
+                        check_base += 1
+
+                    self.drawing.add(self._base_mark(plot_index, base, color, width=width))
         
         # Symboloic markers need to be drawn second so they are on top of the rectangles
-        for base, match_item in matches.items():
+        for base, mismatch_item in mismatches.items():
             x: float = self.left_margin + self._base_left(base) + ((self._base_left(base+1)-self._base_left(base))/2)
             y: float = (self._seq_count-(plot_index + .5)) * (self._seq_height + self.seq_gap) + self.seq_gap + self._plot_floor
                 
-            if "APOBEC" in match_item:
+            if "APOBEC" in mismatch_item:
                 self.draw_circle(x, y)
                 
-            elif "G->A mutation" in match_item:
+            elif "G->A mutation" in mismatch_item:
                 self.draw_diamond(x, y)
 
-            elif "Glycosylation" in match_item:
+            elif "Glycosylation" in mismatch_item:
                 if is_reference:
                     self.draw_circle(x, y)
                 else:
                     if "Glycosylation" not in self.matches_list[self.references].get(base, {}):
                         self.draw_diamond(x, y, filled=True)
 
-            elif "Stop codon" in match_item:
+            elif "Stop codon" in mismatch_item:
                 self.draw_diamond(x, y, color="#0000FF")
 
         if self.seq_type == "AA" and self._glycosylation:
-            for base, match_item in self.matches_list[self.references].items():
-                if "Glycosylation" in match_item and "Glycosylation" not in matches.get(base, {}):
+            for base, mismatch_item in self.matches_list[self.references].items():
+                if "Glycosylation" in mismatch_item and "Glycosylation" not in mismatches.get(base, {}):
                     x: float = self.left_margin + self._base_left(base) + ((self._base_left(base+1)-self._base_left(base))/2)
                     y: float = (self._seq_count-(plot_index + .5)) * (self._seq_height + self.seq_gap) + self.seq_gap + self._plot_floor
 
@@ -668,27 +680,60 @@ class HighlighterPlot:
     def _draw_marks_match(self, plot_index: int, matches: dict[int, list], is_reference: bool) -> None:
         """ Draw the marks for a match sequence """
 
+        already_processed: dict[list] = {"Unique": [], "Multiple": [], "Single": []}
         for base, match_item in matches.items():
+            check_base: int = base+1
+            width: int = 1
+
             if "Unique" in match_item:
+                if base in already_processed["Unique"]:
+                    continue
+
                 if self._current_unique_color is not None:
                     color: Color = self._hex_to_color(self._current_unique_color)
-                    self.drawing.add(self._base_mark(plot_index, base, color))
+
+                    while check_base in matches and "Unique" in matches[check_base]:
+                        width += 1
+                        already_processed["Unique"].append(check_base)
+                        check_base += 1
+
+                    self.drawing.add(self._base_mark(plot_index, base, color, width=width))
 
             elif len(match_item) > 1:
+
+                if base in already_processed["Multiple"]:
+                    continue
+
                 if self._current_multiple_color is not None:
                     color: Color = self._hex_to_color(self._current_multiple_color)
-                    self.drawing.add(self._base_mark(plot_index, base, color))
+
+                    while check_base in matches and len(matches[check_base]) > 1:
+                        width += 1
+                        already_processed["Multiple"].append(check_base)
+                        check_base += 1
+
+                    self.drawing.add(self._base_mark(plot_index, base, color, width=width))
 
             else:
+                if base in already_processed["Single"]:
+                    continue
+
                 for code in match_item:
                     if self._current_scheme[code] is not None:
                         color: Color = self._hex_to_color(self._current_scheme[code])
-                        self.drawing.add(self._base_mark(plot_index, base, color))
 
-    def _base_mark(self, plot_index, base, color):
+                        while check_base in matches and code in matches[check_base]:
+                            width += 1
+                            already_processed["Single"].append(check_base)
+                            check_base += 1
+
+                        self.drawing.add(self._base_mark(plot_index, base, color, width=width))
+
+    def _base_mark(self, plot_index, base, color, width: int=1) -> Rect:
         """ Returns a mark for a particular base """
+
         x1: float = self.left_margin + self._base_left(base)
-        x2: float = self.left_margin + self._base_left(base+self.mark_width)
+        x2: float = self.left_margin + self._base_left(base + (width - 1) + self.mark_width )
 
         y1: float = ((self._seq_count-plot_index) * (self._seq_height + self.seq_gap)) + (self.seq_gap/2) + self._plot_floor
         y2: float = ((self._seq_count-(plot_index+1)) * (self._seq_height + self.seq_gap)) + self.seq_gap + self._plot_floor

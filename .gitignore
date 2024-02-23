@@ -2,3 +2,4 @@ test_datasets/
 script/*.pyc
 script/__pycache__/
 .vscode/settings.json
+pipeline_data/temp
