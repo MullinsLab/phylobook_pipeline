@@ -54,7 +54,7 @@ def worker(file, logdir, dt):
             # output success info
             lfp.write("*** Succeed ***\n")
 
-def main(wdir, dt, proc):
+def main(wdir, dt, proc, wfile):
     logdir = wdir+"/run_phyml_logs"
 
     if os.path.isdir(logdir) is False:
@@ -62,7 +62,11 @@ def main(wdir, dt, proc):
 
     files = []
     for file in glob.glob(os.path.join(wdir, '*.fasta')):
-        files.append(file)
+        print(f"file: {file}, wfile: {os.path.join(wdir, wfile)}")
+        if not wfile or file == os.path.join(wdir, wfile):
+            files.append(file)
+
+    print(files)
 
     pool = Pool(proc)
     pool.starmap(worker, [(file, logdir, dt) for file in files])
