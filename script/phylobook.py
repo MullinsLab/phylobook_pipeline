@@ -53,11 +53,12 @@ def main(wdir, dt, proc, wfile):
 	print("\n**** Run highlight_bot ****\n")
 	pydir = os.path.dirname(os.path.realpath(__file__))
 	highlighter_bot = os.path.join(pydir, "highlighter_bot.py")
+	python_executible = sys.executable
 	
 	if wfile:
-		hlcommand = f"python3 {highlighter_bot} -d {wdir} -f {wfile}"
+		hlcommand = f"{python_executible} {highlighter_bot} -d {wdir} -f {wfile}"
 	else:
-		hlcommand = "python3 "+highlighter_bot+" -d "+wdir
+		hlcommand = f"{python_executible} {highlighter_bot} -d {wdir}"
 		
 	if dt == 'aa':
 		hlcommand += " -a"
