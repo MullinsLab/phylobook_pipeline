@@ -3,6 +3,7 @@ services:
   phylobook_pipeline:
     container_name: phylobook_pipeline
     build: .
+    platform: linux/amd64
 
     volumes:
       - .:/phylobook_pipeline
