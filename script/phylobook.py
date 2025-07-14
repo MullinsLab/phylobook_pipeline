@@ -75,7 +75,7 @@ def main(wdir, dt, proc, wfile):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dir", help="directory to hold input sequence fasta file", nargs="?", const=1, type=str, default=".")
-    parser.add_argument("-f", "--file", help="specific file in the directory to run the pipeline on", nargs="?", const=1, type=str, default=".")
+    parser.add_argument("-f", "--file", help="specific file in the directory to run the pipeline on", nargs="?", const=1, type=str, default="")
     parser.add_argument("-t", "--datatype", help="sequence datatype, must be 'nt' for nucleotide or 'aa' for amino acid", nargs="?", const=1, type=str, required=True)
     parser.add_argument("-p", "--processes", help="number of processes for multiprocessing", nargs="?", const=1, type=int,
                         default="1")
